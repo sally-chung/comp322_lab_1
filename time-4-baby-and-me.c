@@ -21,7 +21,7 @@ int main() {
     pid_t parentPID;
     pid_t selfPID;
     clock_t fromStart;
-    
+
     struct tms populateTimes;
   
     childPID = fork();   
@@ -35,7 +35,7 @@ int main() {
         printf(", CPID: %d, RETVAL: %d", childPID, status);
     }
 
-    fromStart = times(populateTimes);
+    fromStart = times(&populateTimes);
     printf("\nUSER: %ld, SYS: %ld" , populateTimes.tms_utime, populateTimes.tms_stime);
     printf("\nCUSER: %ld, CSYS: %ld" , populateTimes.tms_utime, populateTimes.tms_stime);
 
