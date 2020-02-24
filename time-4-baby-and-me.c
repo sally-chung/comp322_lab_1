@@ -1,4 +1,5 @@
 #include <sys/types.h>
+#include <sys/times.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
 #include <fcntl.h>
@@ -6,18 +7,38 @@
 #include <errno.h>
 #include <stdio.h>
 #include <time.h>
+#include <stdlib.h>
 
 int main() {
 
+    int status;
     time_t secondsStart; // The program prints the number of seconds since
-    secondsStart = time(NULL;)
+    secondsStart = time(NULL);
+    printf("\nSTART: %ld", secondsStart);
+
     pid_t childPID; // creating a child process
-    pid_t fork(void);    
-    pid_t waitpid(pid_t pid, int *status, int options); // The program will wait for the child to finish
+    childPID = 0;
+    pid_t parentPID;
+    pid_t selfPID;
+    clock_t fromStart;
+    
+    struct tms populateTimes;
+  
+    childPID = fork();   
+    waitpid(childPID, &status, 0); // The program will wait for the child to finish
 
+    selfPID = getpid();
+    parentPID = getppid();
+    
+    printf("\nPPID: %d, PID: %d", parentPID, selfPID);
+    if (childPID != 0) {
+        printf(", CPID: %d, RETVAL: %d", childPID, status);
+    }
 
-    pid_t getppid(void);    // gets PID of parent
-    pid_t getpid(void);     // gets its own PID
+    fromStart = times(populateTimes);
+    printf("\nUSER: %ld, SYS: %ld" , populateTimes.tms_utime, populateTimes.tms_stime);
+    printf("\nCUSER: %ld, CSYS: %ld" , populateTimes.tms_utime, populateTimes.tms_stime);
+
     // if applicable 
     //  fork getppid & getpid
 
@@ -25,14 +46,14 @@ int main() {
         // void exit(int status);
         // waitpid(pid_t pid, int *status, int options);
 
-    time_t secondsFinish; // The program prints the number of seconds since
-    secondsFinish = time(NULL;)
+    time_t secondsStop; // The program prints the number of seconds since
+    secondsStop = time(NULL);
+    printf("\nSTOP: %ld", secondsStop);
 
-    
+    exit(0);
 }
 
 /* 
-
 time-4-baby-and-me.txt:
 1410281230 26485 26846 26484 26485 26846 0
 

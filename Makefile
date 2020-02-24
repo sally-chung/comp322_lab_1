@@ -24,11 +24,11 @@ all: $(EXECUTABLES)
 # On the following lines (which _must_ start with a tab), are the commands I need to type -- 
 # each time my source file is modified.
 $(EXECUTABLES): $(SRC)
-    $(CC) $(CFLAGS) -c $(SRC)
-    $(CC) $(CFLAGS) -o $@ $(OBJ)
+	$(CC) $(CFLAGS) -c $(SRC)
+	$(CC) $(CFLAGS) -o $@ $(OBJ)
 
 # By convention, I always have a target called
 # "clean" that I used to define all temporary
 # or intermediates.
 clean:
-    rm -f $(EXECUTABLES) $(OBJ) *~
+	rm -f $(EXECUTABLES) $(OBJ) *~
