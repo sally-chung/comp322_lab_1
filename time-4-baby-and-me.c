@@ -24,20 +24,26 @@ int main() {
 
     struct tms populateTimes;
   
-    childPID = fork();   
+    childPID = fork();   // moving around
+
+
     waitpid(childPID, &status, 0); // The program will wait for the child to finish
 
     selfPID = getpid();
-    parentPID = getppid();
-    
-    printf("\nPPID: %d, PID: %d", parentPID, selfPID);
-    if (childPID != 0) {
-        printf(", CPID: %d, RETVAL: %d", childPID, status);
-    }
+    parentPID = getppid(); // above
 
-    fromStart = times(&populateTimes);
-    printf("\nUSER: %ld, SYS: %ld" , populateTimes.tms_utime, populateTimes.tms_stime);
-    printf("\nCUSER: %ld, CSYS: %ld" , populateTimes.tms_utime, populateTimes.tms_stime);
+    printf("\nPPID: %d, PID: %d", parentPID, selfPID);
+    if (childPID > 0) {
+
+        printf(", CPID: %d, RETVAL: %d", childPID, WIFEXITED(status));
+
+    
+        //below 
+        fromStart = times(&populateTimes);
+        printf("\nUSER: %ld, SYS: %ld" , populateTimes.tms_utime, populateTimes.tms_stime);
+        printf("\nCUSER: %ld, CSYS: %ld" , populateTimes.tms_utime, populateTimes.tms_stime);
+
+    }
 
     // if applicable 
     //  fork getppid & getpid
@@ -49,8 +55,9 @@ int main() {
     time_t secondsStop; // The program prints the number of seconds since
     secondsStop = time(NULL);
     printf("\nSTOP: %ld", secondsStop);
+    printf("\n");
 
-    exit(0);
+    exit(3);
 }
 
 /* 
