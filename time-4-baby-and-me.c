@@ -9,13 +9,11 @@
 #include <time.h>
 #include <stdlib.h>
 
+
 int main() {
 
+    time_t currentTime; // The program prints the number of seconds since
     int status;
-    time_t secondsStart; // The program prints the number of seconds since
-    secondsStart = time(NULL);
-    printf("\nSTART: %ld", secondsStart);
-
     pid_t childPID; // creating a child process
     childPID = 0;
     pid_t parentPID;
@@ -23,27 +21,22 @@ int main() {
     clock_t fromStart;
 
     struct tms populateTimes;
-  
-    childPID = fork();   // moving around
 
-
-    waitpid(childPID, &status, 0); // The program will wait for the child to finish
-
+    currentTime = time(NULL);
+    printf("\nSTART: %ld", currentTime);
+    childPID = fork();   
     selfPID = getpid();
-    parentPID = getppid(); // above
-
+    parentPID = getppid();
+    waitpid(childPID, &status, 0); // The program will wait for the child to finish
+    
     printf("\nPPID: %d, PID: %d", parentPID, selfPID);
     if (childPID > 0) {
-
-        printf(", CPID: %d, RETVAL: %d", childPID, WIFEXITED(status));
-
-    
-        //below 
-        fromStart = times(&populateTimes);
-        printf("\nUSER: %ld, SYS: %ld" , populateTimes.tms_utime, populateTimes.tms_stime);
-        printf("\nCUSER: %ld, CSYS: %ld" , populateTimes.tms_utime, populateTimes.tms_stime);
-
+        printf(", CPID: %d, RETVAL: %d", childPID, status);
     }
+
+    fromStart = times(&populateTimes);
+    printf("\nUSER: %ld, SYS: %ld" , populateTimes.tms_utime, populateTimes.tms_stime);
+    printf("\nCUSER: %ld, CSYS: %ld" , populateTimes.tms_utime, populateTimes.tms_stime);
 
     // if applicable 
     //  fork getppid & getpid
@@ -52,13 +45,16 @@ int main() {
         // void exit(int status);
         // waitpid(pid_t pid, int *status, int options);
 
-    time_t secondsStop; // The program prints the number of seconds since
-    secondsStop = time(NULL);
-    printf("\nSTOP: %ld", secondsStop);
-    printf("\n");
+
+    currentTime = time(NULL);
+    printf("\nSTOP: %ld\n", currentTime);
 
     exit(3);
 }
+
+
+
+
 
 /* 
 time-4-baby-and-me.txt:
